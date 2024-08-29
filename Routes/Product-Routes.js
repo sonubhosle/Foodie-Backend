@@ -12,4 +12,5 @@ router.get('/id/:id', Product_Controller.findProductById);
 router.get('/:id/related', Product_Controller.getRelatedProducts);
 
 
+
 module.exports = router;

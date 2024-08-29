@@ -7,7 +7,6 @@ const cors = require('cors');
 app.use(express.json());
 app.use(cors());
 
-const role = require('./Middlewares/role')
 
 // Auth Routing 
 
@@ -23,7 +22,7 @@ app.use('/api/user', User_Route);
 // Admin Product Routes
 
 const Admin_Product_Route = require('./Routes/Admin-Products-Routes');
-app.use('/api/admin/products',role('ADMIN'), Admin_Product_Route);
+app.use('/api/admin/products', Admin_Product_Route);
 
 // Products Route User
 
@@ -42,25 +41,30 @@ app.use('/api/user/cart-items', Cart_Items_Route);
 
 // Order Routes
 const Order_Route = require('./Routes/Order-Routes');
-app.use('/api/orders',Order_Route);
+app.use('/api/orders', Order_Route);
 
 // Admin Order Routes
 const Admin_Order_Route = require('./Routes/Admin-Order-Routes');
-app.use('/api/admin/orders',role('ADMIN'),Admin_Order_Route);
+app.use('/api/admin/orders', Admin_Order_Route);
 
 // Reviews Route  
 const Review_Route = require('./Routes/Review-Routes');
-app.use('/api',Review_Route);
+app.use('/api', Review_Route);
 
 // Rating Route  
 const Rating_Route = require('./Routes/Rating-Routes');
-app.use('/api/rate',Rating_Route);
+app.use('/api/rate', Rating_Route);
 
 // Address Route  
 const Address_Route = require('./Routes/Address-Routes');
-app.use('/api/user',Address_Route);
+app.use('/api/user', Address_Route);
 
 
+// Payments Routes
+
+
+const Payment_Route = require('./Routes/Payment-Routes');
+app.use('/api/payments',Payment_Route );
 
 
 
