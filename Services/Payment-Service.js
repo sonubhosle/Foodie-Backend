@@ -1,27 +1,27 @@
-const razorpay = require ("../Config/PAYMENT.js");
-const Order_Service = require ("../Services/Order-Service.js");
+const razorpay = require("../Config/PAYMENT.js");
+const Order_Service = require("../Services/Order-Service.js");
 
-const createPaymentLink =  async (orderId) =>{
+const createPaymentLink = async (orderId) => {
 
     try {
 
         const order = await Order_Service.findOrderById(orderId);
-        const paymentLinkRequest ={
-            amount:order.totalDiscountPrice * 100,
-            currency:"INR",
-            customer:{
-                name:order.user.firstName +""+ order.user.lastName,
-                contact:order.user.mobile,
-                email:order.user.email
+        const paymentLinkRequest = {
+            amount: order.totalDiscountPrice * 100,
+            currency: "INR",
+            customer: {
+                name: order.user.firstName + "" + order.user.lastName,
+                contact: order.user.mobile,
+                email: order.user.email
             },
-            notify:{
-                sms:true,
-                email:true
+            notify: {
+                sms: true,
+                email: true
 
             },
-            reminder_enable:true,
-            callback_url:`http://localhost:5173/payment/${orderId}`,
-            callback_method:'get'
+            reminder_enable: true,
+            callback_url: `https://foodie-2b8c1.web.app/${orderId}`,
+            callback_method: 'get'
 
         };
 
@@ -35,17 +35,17 @@ const createPaymentLink =  async (orderId) =>{
             payment_link_url
         }
         return resData;
-       
-        
+
+
     } catch (error) {
 
         throw new Error(error.message)
-        
+
     }
 
 }
 
-const updatePaymentInformation = async (reqData) =>{
+const updatePaymentInformation = async (reqData) => {
 
     const paymentId = reqData.payment_id;
     const orderId = reqData.order_id;
@@ -53,15 +53,15 @@ const updatePaymentInformation = async (reqData) =>{
         const order = await Order_Service.findOrderById(orderId);
         const payment = await razorpay.payments.fetch(paymentId);
 
-        if(payment.status == "captured"){
+        if (payment.status == "captured") {
             order.paymentDetails.paymentId = paymentId;
             order.paymentDetails.status = "COMPLETED";
             order.orderStatus = "PLACED";
             await order.save()
         }
 
-        const resData = {message:"Your Order Is Placed",success:true}
-         return resData;
+        const resData = { message: "Your Order Is Placed", success: true }
+        return resData;
     } catch (error) {
         throw new Error(error.message)
 
@@ -69,7 +69,7 @@ const updatePaymentInformation = async (reqData) =>{
 }
 
 
-module.exports ={
+module.exports = {
     createPaymentLink,
     updatePaymentInformation
 }
